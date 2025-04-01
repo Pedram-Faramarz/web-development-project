@@ -86,11 +86,7 @@ git push -u origin main
 4. **Push** to GitHub (`git push origin feature-branch`)
 5. Open a **Pull Request** 🚀
 
-## 📜 License
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-### 💬 Need help?
-Feel free to reach out or open an issue! 😊
 
