@@ -1,0 +1,581 @@
+[
+    {
+        "model": "ecommerce.orderstatus",
+        "pk": 1,
+        "fields": {
+            "name": "Pending",
+            "description": "Order has been placed but not yet processed"
+        }
+    },
+    {
+        "model": "ecommerce.orderstatus",
+        "pk": 2,
+        "fields": {
+            "name": "Processing",
+            "description": "Order is being processed"
+        }
+    },
+    {
+        "model": "ecommerce.orderstatus",
+        "pk": 3,
+        "fields": {
+            "name": "Shipped",
+            "description": "Order has been shipped"
+        }
+    },
+    {
+        "model": "ecommerce.orderstatus",
+        "pk": 4,
+        "fields": {
+            "name": "Delivered",
+            "description": "Order has been delivered"
+        }
+    },
+    {
+        "model": "ecommerce.orderstatus",
+        "pk": 5,
+        "fields": {
+            "name": "Cancelled",
+            "description": "Order has been cancelled"
+        }
+    },
+    {
+        "model": "ecommerce.category",
+        "pk": 1,
+        "fields": {
+            "name": "Electronics",
+            "description": "Electronic devices and accessories",
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.category",
+        "pk": 2,
+        "fields": {
+            "name": "Clothing",
+            "description": "Apparel and fashion items",
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.category",
+        "pk": 3,
+        "fields": {
+            "name": "Books",
+            "description": "Books and publications",
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.category",
+        "pk": 4,
+        "fields": {
+            "name": "Home & Kitchen",
+            "description": "Home decor and kitchen appliances",
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.category",
+        "pk": 5,
+        "fields": {
+            "name": "Sports & Outdoors",
+            "description": "Sports equipment and outdoor gear",
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.category",
+        "pk": 6,
+        "fields": {
+            "name": "Beauty & Personal Care",
+            "description": "Beauty products and personal care items",
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.category",
+        "pk": 7,
+        "fields": {
+            "name": "Toys & Games",
+            "description": "Toys, games, and entertainment items",
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.category",
+        "pk": 8,
+        "fields": {
+            "name": "Food & Grocery",
+            "description": "Food items and grocery products",
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$jIRFpIrlUGPVjSy0LiLVUZ$vfRl2J1tFmrL8SxZQzy4+7gzVu79JHxCf1GkrRWLg/o=",
+            "last_login": "2025-04-21T00:00:00Z",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "Admin",
+            "last_name": "User",
+            "email": "admin@example.com",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2025-04-20T00:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$pWzPmNeDYgslRXsOAJyYdS$nGZ5IfY9Vb+HlZ1YIVenE4Zqh/QJi5p5h3qz2YLzX0M=",
+            "last_login": "2025-04-21T00:00:00Z",
+            "is_superuser": false,
+            "username": "customer1",
+            "first_name": "John",
+            "last_name": "Doe",
+            "email": "john@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-04-20T00:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 3,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$qZjXt2SwRJcaC5lnriqTJm$w0p2s5i9vPMNgOUzjSB54Yp9sXHSZzF7Vx8MQTJqXQo=",
+            "last_login": "2025-04-21T00:00:00Z",
+            "is_superuser": false,
+            "username": "customer2",
+            "first_name": "Jane",
+            "last_name": "Smith",
+            "email": "jane@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2025-04-20T00:00:00Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 1,
+        "fields": {
+            "name": "Smartphone XYZ",
+            "description": "Latest smartphone with advanced features",
+            "price": "899.99",
+            "stock": 50,
+            "category": 1,
+            "is_active": true,
+            "is_featured": true,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 2,
+        "fields": {
+            "name": "Laptop Pro",
+            "description": "Professional laptop with high performance",
+            "price": "1299.99",
+            "stock": 30,
+            "category": 1,
+            "is_active": true,
+            "is_featured": true,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 3,
+        "fields": {
+            "name": "Wireless Earbuds",
+            "description": "Premium wireless earbuds with noise cancellation",
+            "price": "149.99",
+            "stock": 100,
+            "category": 1,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 4,
+        "fields": {
+            "name": "Smart Watch",
+            "description": "Fitness tracking smartwatch with heart rate monitor",
+            "price": "199.99",
+            "stock": 75,
+            "category": 1,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 5,
+        "fields": {
+            "name": "Tablet Ultra",
+            "description": "Ultra-thin tablet with high-resolution display",
+            "price": "449.99",
+            "stock": 40,
+            "category": 1,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 6,
+        "fields": {
+            "name": "Men's Casual T-Shirt",
+            "description": "Comfortable cotton t-shirt for daily wear",
+            "price": "24.99",
+            "stock": 200,
+            "category": 2,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 7,
+        "fields": {
+            "name": "Women's Running Shoes",
+            "description": "Lightweight running shoes with cushioned sole",
+            "price": "89.99",
+            "stock": 120,
+            "category": 2,
+            "is_active": true,
+            "is_featured": true,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 8,
+        "fields": {
+            "name": "Denim Jeans",
+            "description": "Classic denim jeans with straight fit",
+            "price": "59.99",
+            "stock": 150,
+            "category": 2,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 9,
+        "fields": {
+            "name": "Winter Jacket",
+            "description": "Warm winter jacket with water-resistant shell",
+            "price": "129.99",
+            "stock": 80,
+            "category": 2,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 10,
+        "fields": {
+            "name": "Sun Hat",
+            "description": "Wide-brimmed sun hat for summer protection",
+            "price": "19.99",
+            "stock": 100,
+            "category": 2,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 11,
+        "fields": {
+            "name": "The Art of Programming",
+            "description": "Comprehensive guide to programming principles",
+            "price": "34.99",
+            "stock": 60,
+            "category": 3,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 12,
+        "fields": {
+            "name": "Modern Fiction Novel",
+            "description": "Bestselling novel exploring modern themes",
+            "price": "24.99",
+            "stock": 85,
+            "category": 3,
+            "is_active": true,
+            "is_featured": true,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 13,
+        "fields": {
+            "name": "Cookbook Collection",
+            "description": "Collection of international recipes",
+            "price": "29.99",
+            "stock": 40,
+            "category": 3,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 14,
+        "fields": {
+            "name": "Science Encyclopedia",
+            "description": "Illustrated encyclopedia of scientific concepts",
+            "price": "39.99",
+            "stock": 30,
+            "category": 3,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 15,
+        "fields": {
+            "name": "Digital Art Sketchbook",
+            "description": "Guide to creating digital art",
+            "price": "22.99",
+            "stock": 50,
+            "category": 3,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 16,
+        "fields": {
+            "name": "Air Fryer Deluxe",
+            "description": "Multi-function air fryer for healthy cooking",
+            "price": "99.99",
+            "stock": 55,
+            "category": 4,
+            "is_active": true,
+            "is_featured": true,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 17,
+        "fields": {
+            "name": "Bedding Set",
+            "description": "Luxury cotton bedding set",
+            "price": "79.99",
+            "stock": 70,
+            "category": 4,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 18,
+        "fields": {
+            "name": "Smart Home Hub",
+            "description": "Central hub for smart home automation",
+            "price": "149.99",
+            "stock": 45,
+            "category": 4,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 19,
+        "fields": {
+            "name": "Kitchen Knife Set",
+            "description": "Professional chef's knife set",
+            "price": "89.99",
+            "stock": 35,
+            "category": 4,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 20,
+        "fields": {
+            "name": "Robotic Vacuum Cleaner",
+            "description": "Automated vacuum with smart mapping",
+            "price": "249.99",
+            "stock": 25,
+            "category": 4,
+            "is_active": true,
+            "is_featured": true,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 21,
+        "fields": {
+            "name": "Yoga Mat Premium",
+            "description": "Non-slip yoga mat with alignment markings",
+            "price": "39.99",
+            "stock": 90,
+            "category": 5,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 22,
+        "fields": {
+            "name": "Mountain Bike",
+            "description": "All-terrain mountain bike with suspension",
+            "price": "499.99",
+            "stock": 20,
+            "category": 5,
+            "is_active": true,
+            "is_featured": true,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 23,
+        "fields": {
+            "name": "Camping Tent 4-Person",
+            "description": "Weather-resistant camping tent for 4 people",
+            "price": "129.99",
+            "stock": 30,
+            "category": 5,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 24,
+        "fields": {
+            "name": "Fitness Tracker",
+            "description": "Advanced fitness tracker with GPS",
+            "price": "79.99",
+            "stock": 65,
+            "category": 5,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 25,
+        "fields": {
+            "name": "Basketball",
+            "description": "Official size basketball for indoor/outdoor play",
+            "price": "29.99",
+            "stock": 80,
+            "category": 5,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 26,
+        "fields": {
+            "name": "Facial Cleanser",
+            "description": "Gentle facial cleanser for all skin types",
+            "price": "14.99",
+            "stock": 120,
+            "category": 6,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    },
+    {
+        "model": "ecommerce.product",
+        "pk": 27,
+        "fields": {
+            "name": "Premium Shampoo",
+            "description": "Moisturizing shampoo for damaged hair",
+            "price": "18.99",
+            "stock": 100,
+            "category": 6,
+            "is_active": true,
+            "is_featured": false,
+            "created_at": "2025-04-21T00:00:00Z",
+            "updated_at": "2025-04-21T00:00:00Z"
+        }
+    }
+]
