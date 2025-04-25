@@ -6,6 +6,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # Authentication endpoints
@@ -21,6 +23,12 @@ urlpatterns = [
     path('api/categories/', views.CategoryList.as_view(), name='category-list'),
     
     # Order endpoints
+    path('api/orders/all', views.list_orders, name='order-list'),
     path('api/orders/', views.OrderList.as_view(), name='order-list'),
     path('api/orders/<int:pk>/', views.OrderDetail.as_view(), name='order-detail'),
+
+    path('api/check-admin-status/', views.check_admin_status, name='check-admin-status'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -37,20 +37,19 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     is_active = models.BooleanField(default=True)
     is_featured = models.BooleanField(default=False)
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True)  # Changed here
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-
-
-    # custom model manager
     objects = ProductManger()
-
+    
     def __str__(self):
         return self.name
     
     @property
     def in_stock(self):
         return self.stock > 0
+
 
 class OrderStatus(models.Model):
     name = models.CharField(max_length=50)

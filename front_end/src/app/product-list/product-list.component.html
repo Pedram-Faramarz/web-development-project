@@ -1,0 +1,264 @@
+
+<div class="container">
+  <h2>Products</h2>
+  
+  
+  
+  <!-- View mode and sort controls -->
+  <div class="view-controls">
+    <div class="view-mode">
+      <button [class.active]="viewMode === 'grid'" (click)="viewMode = 'grid'">
+        <i class="fa fa-th"></i> Grid
+      </button>
+      <button [class.active]="viewMode === 'list'" (click)="viewMode = 'list'">
+        <i class="fa fa-list"></i> List
+      </button>
+    </div>
+    
+    <div class="sort-controls">
+      <label for="sort-select">Sort by:</label>
+      <select 
+        id="sort-select" 
+        [(ngModel)]="filterState.sortBy" 
+        (change)="applyFilters()"
+      >
+        <option *ngFor="let option of sortOptions" [value]="option.value">
+          {{ option.label }}
+        </option>
+      </select>
+      
+      <button (click)="filterState.sortDirection = filterState.sortDirection === 'asc' ? 'desc' : 'asc'; applyFilters()">
+        <i class="fa" [ngClass]="filterState.sortDirection === 'asc' ? 'fa-sort-up' : 'fa-sort-down'"></i>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Recently viewed products -->
+  <div *ngIf="recentlyViewed.length > 0" class="recently-viewed">
+    <h3>Recently Viewed</h3>
+    <div class="recent-products">
+      <div *ngFor="let product of recentlyViewed" class="recent-product-card">
+        <img [src]="product?.image || 'assets/images/placeholder.jpg'" alt="{{ product.name }}" 
+             >
+        <div class="recent-product-info">
+          <p>{{ product.name }}</p>
+          <p class="price">{{ product.price | currency }}</p>
+        </div>
+        <button [routerLink]="['/products', product.id]" class="view-recent-btn">
+          View
+        </button>
+      </div>
+    </div>
+    <button (click)="clearRecentlyViewed()" class="clear-recent">Clear History</button>
+  </div>
+  
+  <!-- Filter controls -->
+  <div class="filters">
+    <div class="category-filter">
+      <h4><i class="fa fa-tags"></i> Categories</h4>
+      <ul>
+        <li>
+          <a (click)="filterByCategory(null)" [class.active]="filterState.category === null">All Categories</a>
+        </li>
+        <li *ngFor="let category of categories">
+          <a (click)="filterByCategory(category.id!)" [class.active]="filterState.category === category.id">
+            {{ category.name }}
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="price-filter">
+      <h4><i class="fa fa-dollar-sign"></i> Price Range</h4>
+      <div class="price-inputs">
+        <div>
+          <label for="min-price">Min Price:</label>
+          <input type="number" id="min-price" [(ngModel)]="filterState.minPrice">
+        </div>
+        <div>
+          <label for="max-price">Max Price:</label>
+          <input type="number" id="max-price" [(ngModel)]="filterState.maxPrice">
+        </div>
+      </div>
+      <button (click)="applyPriceFilter()"><i class="fa fa-filter"></i> Apply</button>
+      <button (click)="resetFilters()"><i class="fa fa-undo"></i> Reset All Filters</button>
+    </div>
+    
+  </div>
+  <!-- Search bar -->
+  <div class="search-container">
+    <div class="search-input">
+      <i class="fa fa-search search-icon"></i>
+      <input 
+        type="text" 
+        placeholder="Search products..." 
+        [(ngModel)]="filterState.searchQuery" 
+        (input)="applyFilters()"
+      >
+      <button *ngIf="filterState.searchQuery" (click)="clearSearch()" class="clear-search">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Products display -->
+  <div *ngIf="loading" class="loading">
+    <i class="fa fa-spinner fa-spin"></i> Loading products...
+  </div>
+  <div *ngIf="error" class="error">
+    <i class="fa fa-exclamation-circle"></i> {{ error }}
+  </div>
+  
+  <!-- Cart notification -->
+  <div *ngIf="cartMessage" class="cart-notification">
+    <i class="fa fa-check-circle"></i> {{ cartMessage }}
+    <button class="close-notification" (click)="cartMessage = ''">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+  
+  <!-- Grid view -->
+  <div *ngIf="viewMode === 'grid'" class="products-grid">
+    <div *ngFor="let product of filteredProducts; trackBy: trackById" class="product-card">
+      <div class="product-image">
+        <img [src]="product?.image || 'assets/images/placeholder.jpg'" 
+             alt="{{ product.name }}"
+            >
+        <div *ngIf="product.is_featured" class="featured-badge">
+          <i class="fa fa-star"></i> Featured
+        </div>
+        <button class="wishlist-btn" (click)="toggleWishlist(product.id!)">
+          <i class="fa" [ngClass]="isInWishlist(product.id!) ? 'fa-heart' : 'fa-heart-o'"></i>
+        </button>
+      </div>
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+        <div class="price-container">
+          <p class="price">{{ product.price | currency }}</p>
+        </div>
+        <p class="stock-info">
+          <i class="fa fa-cubes"></i> 
+          <span [ngClass]="{'low-stock': product.stock <= 5 && product.stock > 0}">
+            {{ product.stock > 0 ? 'In Stock: ' + product.stock : 'Out of Stock' }}
+          </span>
+        </p>
+        <div class="product-actions">
+          <button [routerLink]="['/products', product.id]" 
+                  (click)="viewProductDetails(product)"
+                  class="view-btn">
+            <i class="fa fa-eye"></i> View Details
+          </button>
+          <button *ngIf="product.stock > 0" (click)="addToCart(product)" class="cart-btn">
+            <i class="fa fa-shopping-cart"></i> Add to Cart
+          </button>
+          <button *ngIf="product.stock <= 0" disabled class="out-of-stock-btn">
+            <i class="fa fa-ban"></i> Out of Stock
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- List view -->
+  <div *ngIf="viewMode === 'list'" class="products-list">
+    <div *ngFor="let product of filteredProducts; trackBy: trackById" class="product-list-item">
+      <div class="product-list-image">
+        <img [src]="product?.image" 
+             alt="{{ product.name }}"
+             >
+      </div>
+      <div class="product-list-details">
+        <div class="product-list-header">
+          <h3>{{ product.name }}</h3>
+          <div class="product-list-badges">
+            <span *ngIf="product.is_featured" class="featured-badge">
+              <i class="fa fa-star"></i> Featured
+            </span>
+          </div>
+        </div>
+        <p class="product-list-description">{{ product.description }}</p>
+        <div class="product-list-footer">
+          <div class="product-list-price">
+            <p class="price">{{ product.price | currency }}</p>
+          </div>
+          <p class="stock-info">
+            <i class="fa fa-cubes"></i> 
+            <span [ngClass]="{'low-stock': product.stock <= 5 && product.stock > 0}">
+              {{ product.stock > 0 ? 'In Stock: ' + product.stock : 'Out of Stock' }}
+            </span>
+          </p>
+          <div class="product-list-actions">
+            <button (click)="toggleWishlist(product.id!)" 
+                    class="wishlist-btn"
+                    [ngClass]="{'active': isInWishlist(product.id!)}">
+              <i class="fa" [ngClass]="isInWishlist(product.id!) ? 'fa-heart' : 'fa-heart-o'"></i>
+              {{ isInWishlist(product.id!) ? 'Saved' : 'Save' }}
+            </button>
+            <button [routerLink]="['/products', product.id]" 
+                    (click)="viewProductDetails(product)"
+                    class="view-btn">
+              <i class="fa fa-eye"></i> View Details
+            </button>
+            <button *ngIf="product.stock > 0" (click)="addToCart(product)" class="cart-btn">
+              <i class="fa fa-shopping-cart"></i> Add to Cart
+            </button>
+            <button *ngIf="product.stock <= 0" disabled class="out-of-stock-btn">
+              <i class="fa fa-ban"></i> Out of Stock
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="filteredProducts.length === 0 && !loading" class="no-products">
+    <i class="fa fa-info-circle"></i> No products found.
+  </div>
+  
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="totalPages > 0">
+    <button 
+      [disabled]="filterState.page === 1"
+      (click)="changePage(1)" 
+      class="pagination-btn"
+    >
+      <i class="fa fa-angle-double-left"></i>
+    </button>
+    <button 
+      [disabled]="filterState.page === 1"
+      (click)="changePage(filterState.page - 1)" 
+      class="pagination-btn"
+    >
+      <i class="fa fa-angle-left"></i>
+    </button>
+    
+    <span class="page-info">Page {{ filterState.page }} of {{ totalPages }}</span>
+    
+    <button 
+      [disabled]="filterState.page === totalPages"
+      (click)="changePage(filterState.page + 1)" 
+      class="pagination-btn"
+    >
+      <i class="fa fa-angle-right"></i>
+    </button>
+    <button 
+      [disabled]="filterState.page === totalPages"
+      (click)="changePage(totalPages)" 
+      class="pagination-btn"
+    >
+      <i class="fa fa-angle-double-right"></i>
+    </button>
+    
+    <div class="items-per-page">
+      <label for="items-per-page">Items per page:</label>
+      <select 
+        id="items-per-page" 
+        [(ngModel)]="filterState.itemsPerPage" 
+        (change)="changeItemsPerPage(filterState.itemsPerPage)"
+      >
+        <option *ngFor="let option of pageSizeOptions" [value]="option">
+          {{ option }}
+        </option>
+      </select>
+    </div>
+  </div>

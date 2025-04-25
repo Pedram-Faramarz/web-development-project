@@ -13,10 +13,16 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ['user__username', 'shipping_address']
     inlines = [OrderItemInline]
 
+from django.utils.html import format_html
+
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'price', 'stock', 'category', 'is_active', 'is_featured']
-    list_filter = ['category', 'is_active', 'is_featured', 'created_at']
-    search_fields = ['name', 'description']
+    list_display = ('name', 'price', 'stock', 'category', 'is_active', 'is_featured', 'image_tag')
+    
+    def image_tag(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="50" height="50" />', obj.image.url)
+        return "-"
+    image_tag.short_description = 'Image'
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'created_at']

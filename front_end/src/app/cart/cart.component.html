@@ -1,0 +1,100 @@
+<div class="container">
+    <h2>Shopping Cart</h2>
+  
+    <!-- Empty Cart -->
+    <div *ngIf="cartItems.length === 0" class="empty-cart">
+      <p>Your cart is empty</p>
+      <button routerLink="/products">Continue Shopping</button>
+    </div>
+    <div *ngIf="statusmessage" [ngClass]="{
+      'status-success': statustype === 'success',
+      'status-error': statustype === 'error',
+      'status-info': statustype === 'info'
+  }" class="status-message">
+{{ statusmessage }}
+
+<!-- Optional: Show extra message if it's a success -->
+<ng-container *ngIf="statustype === 'success'">
+  <div class="redirect-info">You can view your order history on the <a routerLink="/orders">Orders page</a>.</div>
+</ng-container>
+</div>
+  
+    <!-- Cart with Items -->
+    <div *ngIf="cartItems.length > 0" class="cart-content">
+      <div class="cart-items">
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of cartItems">
+              <td>
+                <img *ngIf="item.image_url" [src]="item.image_url" alt="{{ item.name }}" width="50" style="margin-right: 8px;" />
+                {{ item.name }}
+              </td>
+              <td>{{ item.price | currency }}</td>
+              <td>
+                <div class="quantity-control">
+                  <button (click)="updateQuantity(item.product, item.quantity - 1)">-</button>
+                  <input type="number" [(ngModel)]="item.quantity" (ngModelChange)="updateQuantity(item.product, item.quantity)" min="1">
+                  <button (click)="updateQuantity(item.product, item.quantity + 1)">+</button>
+                </div>
+              </td>
+              <td>{{ item.price * item.quantity | currency }}</td>
+              <td>
+                <button (click)="removeItem(item.product)">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  
+        <div class="cart-actions">
+          <button (click)="clearCart()">Clear Cart</button>
+          <button routerLink="/products">Continue Shopping</button>
+        </div>
+      </div>
+  
+      <div class="order-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-item">
+          <span>Subtotal:</span>
+          <span>{{ totalAmount | currency }}</span>
+        </div>
+        <div class="summary-item">
+          <span>Shipping:</span>
+          <span>Free</span>
+        </div>
+        <div class="summary-item total">
+          <span>Total:</span>
+          <span>{{ totalAmount | currency }}</span>
+        </div>
+  
+        <div class="shipping-info">
+          <h4>Shipping Information</h4>
+          <div>
+            <label for="shipping-address">Shipping Address:</label>
+            <textarea id="shipping-address" [(ngModel)]="shippingAddress" rows="3"></textarea>
+          </div>
+          <div>
+            <label for="contact-phone">Contact Phone:</label>
+            <input type="tel" id="contact-phone" [(ngModel)]="contactPhone">
+          </div>
+        </div>
+  
+        <button class="checkout-button" (click)="checkout()">Proceed to Checkout</button>
+       
+  
+      
+        <div *ngIf="!isLoggedIn" class="login-reminder">
+          <p>Please <a routerLink="/login" [queryParams]="{returnUrl: '/cart'}">login</a> to complete your order</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

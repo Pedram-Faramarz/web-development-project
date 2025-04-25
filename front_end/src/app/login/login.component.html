@@ -1,0 +1,105 @@
+<div class="container">
+    <div class="auth-forms">
+      <div *ngIf="!showRegisterForm" class="login-form">
+        <h2>Login</h2>
+        
+        <div *ngIf="error" class="error-message">
+          {{ error }}
+        </div>
+        
+        <form (ngSubmit)="onLogin()">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              [(ngModel)]="loginData.username" 
+              required>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              [(ngModel)]="loginData.password" 
+              required>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" [disabled]="loading">
+              {{ loading ? 'Logging in...' : 'Login' }}
+            </button>
+          </div>
+        </form>
+        
+        <p class="toggle-form">
+          Don't have an account? 
+          <a (click)="showRegisterForm = true">Register now</a>
+        </p>
+      </div>
+      
+      <div *ngIf="showRegisterForm" class="register-form">
+        <h2>Register</h2>
+        
+        <div *ngIf="error" class="error-message">
+          {{ error }}
+        </div>
+        
+        <form (ngSubmit)="onRegister()">
+          <div class="form-group">
+            <label for="reg-username">Username:</label>
+            <input 
+              type="text" 
+              id="reg-username" 
+              name="username" 
+              [(ngModel)]="registerData.username" 
+              required>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              [(ngModel)]="registerData.email" 
+              required>
+          </div>
+          
+          <div class="form-group">
+            <label for="reg-password">Password:</label>
+            <input 
+              type="password" 
+              id="reg-password" 
+              name="password" 
+              [(ngModel)]="registerData.password" 
+              required>
+          </div>
+          
+          <div class="form-group">
+            <label for="confirm-password">Confirm Password:</label>
+            <input 
+              type="password" 
+              id="confirm-password" 
+              name="confirmPassword" 
+              [(ngModel)]="registerData.confirmPassword" 
+              required>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" [disabled]="loading">
+              {{ loading ? 'Registering...' : 'Register' }}
+            </button>
+          </div>
+        </form>
+        
+        <p class="toggle-form">
+          Already have an account? 
+          <a (click)="showRegisterForm = false">Login</a>
+        </p>
+      </div>
+    </div>
+  </div>

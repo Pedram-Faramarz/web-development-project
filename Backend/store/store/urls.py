@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 from ecommerce import user_views
 
 
@@ -25,4 +27,4 @@ urlpatterns = [
     path('api/register/', user_views.register_user, name='register'),
     path('api/profile/', user_views.user_profile, name='profile'),
     path('api/profile/update/', user_views.update_profile, name='update-profile'),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,134 @@
+<div class="container">
+  <h2>Order History</h2>
+  
+
+
+  <div *ngIf="loading" class="loading">
+    Loading orders...
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error">
+    <div *ngIf="orders.length === 0" class="no-orders">
+      <p>No orders found.</p>
+      <button routerLink="/products">Start Shopping</button>
+    </div>
+
+    <div *ngIf="orders.length > 0" class="orders-list">
+      <table>
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <!-- Show user column only for admins -->
+            <th *ngIf="isAdmin">User , ID</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders">
+            <td>{{ order.id }}</td>
+            <!-- Show user info only for admins -->
+            <td *ngIf="isAdmin">{{ (order.user_username || 'Unknown') + ' (' + order.user + ')' }}</td>
+            <td>{{ order.created_at | date: 'medium' }}</td>
+            <td>
+              <span [ngClass]="getStatusClass(getStatusName(order.status))">
+                {{ getStatusName(order.status) }}
+              </span>
+            </td>
+            <td>{{ order.total_amount | currency }}</td>
+            <td>
+              <button (click)="viewOrderDetails(order)">View Details</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Order Details Modal (Same as before, with admin specific actions) -->
+  <div *ngIf="selectedOrder" class="order-details-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Order #{{ selectedOrder.id }}</h3>
+        <button (click)="closeOrderDetails()" class="close-button">×</button>
+      </div>
+
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+
+      <div class="modal-body">
+        <div class="order-info">
+          <!-- Show user details for admin -->
+          <p *ngIf="isAdmin"><strong>User , ID:</strong> {{ (selectedOrder.user_username || 'Unknown') + ', ' + selectedOrder.user }}</p>
+          <p><strong>Date:</strong> {{ selectedOrder.created_at | date: 'medium' }}</p>
+          <div class="status-update">
+            <p><strong>Status:</strong></p>
+            
+            <select 
+              *ngIf="isAdmin" 
+              [(ngModel)]="selectedOrder.status" 
+              (change)="selectedOrder.id && selectedOrder.status && updateOrderStatus(selectedOrder.id, selectedOrder.status)">
+              <option [value]="1">Pending</option>
+              <option [value]="2">Processing</option>
+              <option [value]="3">Shipped</option>
+              <option [value]="4">Delivered</option>
+              <option [value]="5">Cancelled</option>
+            </select>
+            
+            <span *ngIf="!isAdmin" [ngClass]="getStatusClass(getStatusName(selectedOrder.status))">
+              {{ getStatusName(selectedOrder.status) }}
+            </span>
+          </div>
+          
+          <p><strong>Total Amount:</strong> {{ selectedOrder.total_amount | currency }}</p>
+        </div>
+
+        <div class="shipping-info">
+          <h4>Shipping Information</h4>
+          <p>{{ selectedOrder.shipping_address }}</p>
+          <p><strong>Contact:</strong> {{ selectedOrder.contact_phone }}</p>
+        </div>
+
+        <div class="order-items">
+          <h4>Order Items</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of selectedOrder.items">
+                <td>{{ productNames[item.product] || 'Loading...' }}</td>
+                <td>{{ item.price | currency }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price * item.quantity | currency }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button (click)="closeOrderDetails()">Close</button>
+        <button
+          *ngIf="(getStatusName(selectedOrder.status).toLowerCase() === 'pending') && (!isAdmin || (isAdmin && selectedOrder.user === currentUserId))"
+          (click)="cancelOrder(selectedOrder.id!)"
+          class="cancel-button"
+        >
+          Cancel Order
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

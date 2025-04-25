@@ -1,0 +1,56 @@
+<div class="container">
+  <div *ngIf="loading" class="loading">
+    Loading product details...
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="product && !loading" class="product-detail">
+    <div class="product-image">
+      <!-- Display the actual product image or a placeholder if missing -->
+      <img [src]="product.image || 'assets/images/placeholder.jpg'" alt="{{ product.name }}" />
+    </div>
+
+    <div class="product-info">
+      <h1>{{ product.name }}</h1>
+      <p class="price">{{ product.price | currency }}</p>
+
+      <div *ngIf="product.in_stock" class="stock-status in-stock">
+        In Stock ({{ product.stock }} available)
+      </div>
+      <div *ngIf="!product.in_stock" class="stock-status out-of-stock">
+        Out of Stock
+      </div>
+
+      <div class="product-description">
+        <h3>Description</h3>
+        <p>{{ product.description }}</p>
+      </div>
+
+      <div *ngIf="product.in_stock" class="purchase-options">
+        <div class="quantity-selector">
+          <button (click)="decrementQuantity()" [disabled]="quantity <= 1">-</button>
+          <input type="number" [(ngModel)]="quantity" min="1" [max]="product.stock" />
+          <button (click)="incrementQuantity()" [disabled]="quantity >= product.stock">+</button>
+        </div>
+
+        <!-- Add to Cart button -->
+        <button class="add-to-cart" (click)="addToCart()" [disabled]="quantity <= 0 || !product.in_stock">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Notification -->
+  <div *ngIf="cartMessage" class="cart-notification">
+    {{ cartMessage }}
+  </div>
+
+  <div class="navigation-buttons">
+    <!-- Back to Products Button with programmatic navigation -->
+    <button (click)="goBack()">Back to Products</button>
+  </div>
+</div>

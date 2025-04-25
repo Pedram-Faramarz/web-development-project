@@ -5,12 +5,19 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from .models import Category, Product, Order, OrderItem, OrderStatus
 from .serializers import CategorySerializer, ProductSerializer, OrderItemSerializer, OrderSerializer, OrderStatusSerializer,UserSerializer
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, serializers
 from django.shortcuts import get_object_or_404
+from django.db import transaction
 
 
 # Create your views here.
-
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check_admin_status(request):
+    user = request.user
+    return Response({
+        'is_admin': user.is_staff or user.is_superuser
+    })
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -93,46 +100,20 @@ class CategoryList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class OrderList(APIView):
-    """
-    List all orders for the current user or create a new order
-    """
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
-        # Regular users see only their orders, admins see all
-        if request.user.is_staff:
-            orders = Order.objects.all()
-        else:
-            orders = Order.objects.filter(user=request.user)
-            
+        orders = Order.objects.filter(user=request.user).prefetch_related('items', 'items__product')
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data)
-    
+
     def post(self, request):
-        # Add the current authenticated user to the order
-        request.data['user'] = request.user.id
-        
-        serializer = OrderSerializer(data=request.data)
+        serializer = OrderSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             order = serializer.save()
-            
-            # Process order items if provided
-            items_data = request.data.get('items', [])
-            for item_data in items_data:
-                item_data['order'] = order.id
-                item_serializer = OrderItemSerializer(data=item_data)
-                if item_serializer.is_valid():
-                    item_serializer.save()
-                else:
-                    # If item validation fails, delete the order and return error
-                    order.delete()
-                    return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
-            # Refresh order data to include items
-            updated_serializer = OrderSerializer(order)
-            return Response(updated_serializer.data, status=status.HTTP_201_CREATED)
-        
+            return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 # Additional CBV for CRUD operations on Order
@@ -175,3 +156,15 @@ class OrderDetail(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except PermissionError as e:
             return Response({"error": str(e)}, status=status.HTTP_403_FORBIDDEN)
+        
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def list_orders(request):
+    user = request.user
+    if user.is_staff:  # or user.is_superuser or custom admin check
+        orders = Order.objects.all()
+    else:
+        orders = Order.objects.filter(user=user)
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)

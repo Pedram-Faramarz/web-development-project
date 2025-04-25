@@ -1,0 +1,41 @@
+<header>
+  <div class="container">
+    <div class="logo">
+      <a routerLink="/">{{ title }}</a>
+    </div>
+    
+    <nav>
+      <ul>
+        <li><a routerLink="/products" routerLinkActive="active">Products</a></li>
+        <li *ngIf="isLoggedIn"><a routerLink="/orders" routerLinkActive="active">My Orders</a></li>
+        <li>
+          <a routerLink="/cart" routerLinkActive="active" class="cart-link">
+            Cart
+            <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <div class="auth-links">
+      <ng-container *ngIf="isLoggedIn; else loggedOut">
+        <span class="username">Welcome, {{ username }}</span>
+        <button (click)="logout()">Logout</button>
+      </ng-container>
+      
+      <ng-template #loggedOut>
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+      </ng-template>
+    </div>
+  </div>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<footer>
+  <div class="container">
+    <p>&copy; {{ currentYear }} {{ title }}. All rights reserved.</p>
+  </div>
+</footer>

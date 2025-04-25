@@ -53,21 +53,58 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'product_name', 'quantity', 'price', 'subtotal']
 
 
+# class OrderSerializer(serializers.ModelSerializer):
+#     items = OrderItemSerializer(many=True, read_only=True)
+#     status_name = serializers.ReadOnlyField(source='status.name')
+#     user_username = serializers.ReadOnlyField(source='user.username')
+    
+#     class Meta:
+#         model = Order
+#         fields = ['id', 'user', 'user_username', 'status', 'status_name', 
+#                   'total_amount', 'shipping_address', 'contact_phone', 
+#                   'created_at', 'items']
+#         read_only_fields = ['created_at']
+
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True, read_only=True)
+    items = OrderItemSerializer(many=True)
     status_name = serializers.ReadOnlyField(source='status.name')
     user_username = serializers.ReadOnlyField(source='user.username')
-    
+
     class Meta:
         model = Order
-        fields = ['id', 'user', 'user_username', 'status', 'status_name', 
-                  'total_amount', 'shipping_address', 'contact_phone', 
+        fields = ['id', 'user', 'user_username', 'status', 'status_name',
+                  'total_amount', 'shipping_address', 'contact_phone',
                   'created_at', 'items']
-        read_only_fields = ['created_at']
+        read_only_fields = ['created_at', 'user', 'user_username', 'status_name']
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        user = self.context['request'].user
+        order = Order.objects.create(user=user, **validated_data)
+
+        total_amount = 0
+        for item_data in items_data:
+            product = item_data['product']
+            quantity = item_data.get('quantity', 1)
+            price = product.price  # You could override this if dynamic pricing is needed
+            subtotal = price * quantity
+
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                quantity=quantity,
+                price=price
+            )
+            total_amount += subtotal
+
+        order.total_amount = total_amount
+        order.save()
+        return order
+
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name']
-        read_only_fields = ['id']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name','is_staff', 'is_superuser']
+        read_only_fields = ['id','is_staff', 'is_superuser']
