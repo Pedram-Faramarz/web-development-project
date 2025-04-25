@@ -9,3 +9,9 @@ An **e-commerce platform** where users can browse products, add them to a cart, 
 ---
 
 
+Account
+name : admin
+password : 12345%12345
+
+
+
